@@ -1,0 +1,108 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles/style.css">
+    <script src="https://kit.fontawesome.com/4c536a6bd5.js" crossorigin="anonymous"></script>
+    <title>Todo List</title>
+</head>
+<body>
+    <header><div id="header-title"><img src="./icons/lausanne-metro-logo.svg" alt=""><h1>ToDo List</h1></div></header>
+    <div id="sidebar">
+        <nav>
+            <ul>
+                <li><button id="home-btn" class="button-nav">HOME</button></li>
+                <li><button id="today-btn" class="button-nav">TODAY</button></li>
+                <li><button id="week-btn" class="button-nav">THIS WEEK</button></li>
+            </ul>
+            <div id="project-nav">
+                <h3>PROJECTS</h3>
+                <ul id="project-list">
+                    <!-- <li class="active"><button class="button-project"><i class="fas fa-list-ul"></i></i><div>Example</div></button></li> -->
+                </ul>
+                <button id="button-add-project">
+                    <i class="fas fa-plus" aria-hidden="true"></i>
+                    Add Project
+                </button>
+                <div class="active" id="add-project-popup">
+                    <form id="submit-input-add-project" action="#">
+                        <input id="input-add-project-popup" type="text">
+                    </form>
+                    <div class="add-project-popup-buttons">
+                        <button id="button-add-project-popup">
+                        Add
+                        </button>
+                        <button id="button-cancel-project-popup">
+                        Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div id="content">
+        <section id="home-lists" class="home-list">
+            <div id="todos" class="home-list">
+                <div class="list-header">
+                    <h1>ToDo's</h1>
+                    <div class="todosDueDate"><h1>Due Date</h1><img class="date-arrow" src="./icons/arrow.svg" alt=""></div>
+                </div>
+                <ul class="tasks">
+                    <!-- <li class="task-item completed">
+                        <div class="task-content">
+                            <input type="checkbox">
+                            <div class="task-name"><h2>Example task</h2></div>
+                            <div class="task-duedate"><h2>1/1/2021</h2></div>
+                            <img class="task-delete" src="./icons/delete.svg" alt="">
+                        </div>
+                    </li> -->
+                </ul>
+                <button class="button-add-task " id="button-add-task">
+                    <i class="fas fa-plus" aria-hidden="true"></i>
+                    Add Task
+                </button>
+                <button id="project-delete-btn" class="active">Delete Project</button>
+                <div id="add-task-popup" class="active">
+                    <div id="add-task-popup-upper">
+                        <input id="task-name-input" type="text" placeholder="Task Name">
+                        <input id="due-date-input" type="date">
+                        <div id="add-task-button-container">
+                            <button class="add-task-buttons" id="add-task-submit">Submit</button>
+                            <button class="add-task-buttons" id="add-task-cancel">Cancel</button>
+                        </div>
+                    </div>
+                    <div id="add-task-popup-lower">
+                        <textarea id="task-description-input" placeholder="Task Description" rows="4" cols="40" maxlength="69"></textarea>
+                        <div id="priority-select-container">
+                            <label for="priority">Set Priority:</label>
+                            <select name="priority" id="priority-select">
+                                <option value="low">Low</option>
+                                <option value="medium">Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div id="task-viewer" class="active">
+                    <div id="task-viewer-header" class="list-header">
+                        <h2>Task Viewer</h2>
+                        <i class="fas fa-times"></i>
+                    </div>
+                    <div id="task-viewer-content">
+                        <h3>Task Name: Example</h3>
+                        <h3>Due Date: Example</h3>
+                        <h3>Priority: Example</h3>
+                        <h3>Description: Example</h3>
+                        <h3>Directory: Example</h3>
+                    </div>
+                </div>
+            </div>
+            <div id="upcoming" class="home-list"></div>
+        </section>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>
