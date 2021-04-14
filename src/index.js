@@ -43,11 +43,13 @@ todayButton.addEventListener("click", ()=>{
     currentDirectory = {index: 1, directory: "Today"};
     sortDate(projectStorage[1].tasks, "ascending");
     generateTodayWeekList();
+    addTaskButton.classList.add("hidden");
 });
 weekButton.addEventListener("click", ()=>{
     currentDirectory = {index: 2, directory: "Week"};
     sortDate(projectStorage[2].tasks, "ascending");
     generateTodayWeekList();
+    addTaskButton.classList.add("hidden");
 })
 addProjectButton.addEventListener("click", ()=>{
     addProjectButton.classList.add("active");
@@ -178,6 +180,7 @@ function resetUI(){
         }
     })
     
+    addTaskButton.classList.remove("hidden");
     addTaskButton.classList.remove("active");
     taskViewer.classList.add("active");
     addTaskPopup.classList.add("active");

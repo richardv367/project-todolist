@@ -396,6 +396,9 @@ Add task popup + button
     font-size: medium;
     cursor: pointer;
 }
+#button-add-task.hidden{
+    z-index: -2;
+}
 #add-task-popup{
     width: 100%;
     height: 200px;
