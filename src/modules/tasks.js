@@ -1,6 +1,6 @@
-import {format} from "date-fns";
+import {format, isBefore, toDate, parse} from "date-fns";
 import {projectStorage, currentN, taskNameInput, taskDescriptionInput, taskDueDateInput, taskPriorityInput, currentDirectory} from "../index";
-import {generateTaskItem, editReplaceTaskLi} from "./init";
+import {generateTaskItem, generateProjectContent, editReplaceTaskLi, generateHomeList, generateTodayWeekList} from "./init";
 
 
 // format(new Date(dueDate))
@@ -71,6 +71,7 @@ function editTaskPopup(editIcon){
  }
 function editTask(taskList, input1, input2, input3, input4){
     console.log("currentDirectory to add task: ", currentDirectory);
+    console.log("I AM HERE");
     let taskName = taskNameInput.value;
     let dueDate = taskDueDateInput.value;
     let description = taskDescriptionInput.value;
@@ -78,7 +79,9 @@ function editTask(taskList, input1, input2, input3, input4){
     let editDirectory;
     let replaceLocation;
     let N;
-    if (currentDirectory.directory === "today" || "week"){
+    console.log("NO ERROR YET");
+    if ((currentDirectory.directory === "today") || (currentDirectory.directory === "week")){
+        console.log("I AM HERE 1");
         N = projectStorage[currentDirectory.index].tasks[currentN].location[0];
         let N2 = projectStorage[currentDirectory.index].tasks[currentN].location[1];
         editDirectory = projectStorage[N].tasks[N2].project;
@@ -86,7 +89,9 @@ function editTask(taskList, input1, input2, input3, input4){
         projectStorage[N].tasks[N2] = taskFactory(taskName, dueDate,description, priority,editDirectory);
         console.log("today or week HERE");
     } else{
+        console.log("I AM HERE 2");
         N = currentDirectory.index;
+        console.log("I AM HERE checking N: ", N);
         editDirectory = projectStorage[N].projectName;
     }
     N = currentDirectory.index;
@@ -95,6 +100,41 @@ function editTask(taskList, input1, input2, input3, input4){
     window.localStorage.setItem("projectStorage", JSON.stringify(projectStorage));
     editReplaceTaskLi();
 }
+
+function sortDate(list, direction){
+    let sortedList;
+    if (direction === "ascending"){
+        sortedList = list.sort((a, b) => {
+        if (!isBefore(parse(`${a.dueDate}`, 'dd/MM/yyyy', new Date()), parse(`${b.dueDate}`, 'dd/MM/yyyy', new Date())))
+            return 1;
+        else return -1;
+        });
+    } else if (direction === "descending"){
+        sortedList = list.sort((a, b) => {
+        if (isBefore(parse(`${a.dueDate}`, 'dd/MM/yyyy', new Date()), parse(`${b.dueDate}`, 'dd/MM/yyyy', new Date())))
+            return 1;
+        else return -1;
+        });
+    } else{
+        console.log("ERROR SORTING DATE, INVALID ARGUMENTS");
+    }
+    console.log("Check sortedList: ", sortedList);
+    window.localStorage.setItem("projectStorage", JSON.stringify(projectStorage));
+    
+}
+function toggleSortDate(direction){
+    let indexn = currentDirectory.index;
+    console.log("Check index: ", indexn);
+    console.log("Check projectstorage: ", projectStorage);
+    sortDate(projectStorage[indexn].tasks, direction);
+    if (indexn === 0){
+        generateHomeList();
+    } else if((indexn === 1) || (indexn === 2)){
+        generateTodayWeekList();
+    } else {
+        generateProjectContent(currentDirectory.directory, currentDirectory.index);
+    }
+}
 function getDateFormatted(date) {
     let array = date.split('/');
     console.log("check date split: ", array);
@@ -102,8 +142,8 @@ function getDateFormatted(date) {
     let month = array[1];
     let year = array[2];
     return `${year}-${month}-${day}`;
-  }
+}
 
 
 
-export {addTask, editTask, addTaskTest, editTaskPopup,resetInput, taskFactory, getDateFormatted};
+export {addTask, editTask, addTaskTest, editTaskPopup,resetInput, taskFactory, sortDate, toggleSortDate, getDateFormatted};

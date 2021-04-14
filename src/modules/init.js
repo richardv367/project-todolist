@@ -1,5 +1,5 @@
 import {resetUI, projectStorage, action, currentN, currentDirectory} from "../index";
-import {editTask, editTaskPopup, getDateFormatted} from "./tasks";
+import {editTask, editTaskPopup, sortDate, getDateFormatted} from "./tasks";
 // import {generateProjectListItem} from "./projects";
 
 const todoListContent = document.querySelector("#todos ul");
@@ -15,11 +15,12 @@ const taskViewerContent = document.querySelector("#task-viewer-content");
 function generateHomeList(){
     const homeButton = document.querySelector("#home-btn");
     resetUI();
+    // sortDate(projectStorage[0].tasks, "ascending");
     homeButton.classList.add("current");
     todoListContent.innerHTML = "";
     let length = projectStorage[0].tasks.length;
     currentDirectory = {index: 0, directory: "ToDo's"};
-    taskListHeader.textContent = "Testing";
+    taskListHeader.textContent = "ToDo's";
     console.log("List length", length);
     console.log("homeList: ", todoListContent);
     for (let i=0;i<length;i++) {
@@ -30,6 +31,7 @@ function generateHomeList(){
 function generateTodayWeekList(){
     resetUI();
     if (currentDirectory.directory === "Today"){
+        // sortDate(projectStorage[1].tasks, "ascending");
         const todayButton = document.querySelector("#today-btn");
         todayButton.classList.add("current");
         todoListContent.innerHTML = "";
@@ -42,6 +44,7 @@ function generateTodayWeekList(){
         deleteProjectBtn.classList.add("active");
     }
     else if (currentDirectory.directory === "Week"){
+        // sortDate(projectStorage[2].tasks, "ascending");
         const weekButton = document.querySelector("#week-btn");
         weekButton.classList.add("current");
         todoListContent.innerHTML = "";
@@ -77,16 +80,15 @@ function generateProjectList(){
     }
 }
 
-function generateProjectContent(projectName, projectIndex, button){
+function generateProjectContent(projectName, projectIndex){
     resetUI();
     console.log("generateProjectContent: ", projectName);
     console.log("generateProjectContent: ", projectIndex);
-    console.log("generateProjectContent: ", button);
+    // console.log("generateProjectContent: ", button);
     let length = projectStorage[projectIndex].tasks.length;
     taskListHeader.textContent = projectName;
     currentDirectory = {index: projectIndex, directory: projectName};
     console.log("currentDirectory: ", currentDirectory);
-    button.classList.add("current");
     todoListContent.innerHTML = "";
     for (let i=0;i<length;i++) {
         todoListContent.appendChild(generateTaskItem(projectStorage[projectIndex].tasks[i], i));
@@ -107,7 +109,10 @@ function generateProjectListItem(name, index){
     div.textContent = name;
     div.classList.add("active");
     button.addEventListener("click", e=>{
-        generateProjectContent(button.children[1].textContent, button.dataset.n, button);
+        e.target.classList.add("current");
+        // console.log("Check button: ", button);
+        sortDate(projectStorage[button.dataset.n].tasks, "ascending");
+        generateProjectContent(button.children[1].textContent, button.dataset.n);
     })
     button.appendChild(div);
     // button.classList.add("active");
@@ -282,4 +287,4 @@ function editReplaceTaskLi(){
 
 
 
-export {generateHomeList, generateTodayWeekList, generateProjectList, generateProjectListItem, generateTaskItem, deleteTaskTest, toggleComplete, editReplaceTaskLi};
+export {generateHomeList, generateTodayWeekList, generateProjectList, generateProjectListItem, generateProjectContent, generateTaskItem, deleteTaskTest, toggleComplete, editReplaceTaskLi};

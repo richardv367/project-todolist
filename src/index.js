@@ -1,7 +1,7 @@
 console.log("I AM HERE");
 import {format} from "date-fns";
 import {addProject, projectFactory, checkToday, checkWeek} from "./modules/projects";
-import {addTaskTest, editTask, editTaskPopup, resetInput} from "./modules/tasks";
+import {addTaskTest, editTask, editTaskPopup, resetInput, sortDate, toggleSortDate} from "./modules/tasks";
 import {generateHomeList, generateTodayWeekList, generateProjectList, generateProjectListItem, deleteTaskTest, toggleComplete} from "./modules/init";
 
 const homeButton = document.querySelector("#home-btn");
@@ -27,6 +27,7 @@ const taskDescriptionInput = document.querySelector("#task-description-input");
 const taskPriorityInput = document.querySelector("#priority-select");
 const taskViewer = document.querySelector("#task-viewer");
 const taskViewerCloseBtn = document.querySelector(".fa-times");
+const dateArrow = document.querySelector(".date-arrow");
 
 let taskList = document.querySelector("#todos ul");
 let currentDirectory = {index: 0, directory: "ToDo's"};
@@ -40,10 +41,12 @@ homeButton.addEventListener("click", ()=>{
 });
 todayButton.addEventListener("click", ()=>{
     currentDirectory = {index: 1, directory: "Today"};
+    sortDate(projectStorage[1].tasks, "ascending");
     generateTodayWeekList();
 });
 weekButton.addEventListener("click", ()=>{
     currentDirectory = {index: 2, directory: "Week"};
+    sortDate(projectStorage[2].tasks, "ascending");
     generateTodayWeekList();
 })
 addProjectButton.addEventListener("click", ()=>{
@@ -108,8 +111,22 @@ addTaskCancel.addEventListener("click", ()=>{
 taskViewerCloseBtn.addEventListener("click", ()=>{
     taskViewer.classList.add("active");
 })
-// , taskName, dueDate,description,priority
 
+dateArrow.addEventListener("click", ()=>{
+    // let index = currentDirectory.index;
+    console.log("dateArrow clicked");
+    console.log("Check currentDirectory: ", currentDirectory);
+    if (dateArrow.classList.contains("ascend")){
+        dateArrow.classList.remove("ascend");
+        toggleSortDate("descending");
+    }else{
+        dateArrow.classList.add("ascend");
+        toggleSortDate("ascending");
+    }
+    // sortDate(projectStorage[index].tasks);
+})
+
+// , taskName, dueDate,description,priority
 let projectStorage = JSON.parse(window.localStorage.getItem('projectStorage'));
 currentDate = getCurrentDate();
 console.log("Check currentDate: ", currentDate);
@@ -127,7 +144,6 @@ if(projectStorage === null){
     generateProjectList();
     // console.log("Logging Todos tasks: ", projectStorage[0].tasks);
 } else{
-    console.log("I AM HERE: LINE 23");
     projectStorage[1] = projectFactory("Today");
     projectStorage[2] = projectFactory("Week");
     window.localStorage.setItem("projectStorage", JSON.stringify(projectStorage));
@@ -136,6 +152,8 @@ if(projectStorage === null){
     // CONTINUE HERE
     checkToday();
     checkWeek();
+    // console.log("check list input sort SSSS: ", projectStorage[0].tasks);
+    sortDate(projectStorage[0].tasks, "ascending");
     generateHomeList();
     generateProjectList();
 }
